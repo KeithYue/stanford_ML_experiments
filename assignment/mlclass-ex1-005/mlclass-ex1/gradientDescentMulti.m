@@ -17,15 +17,11 @@ for iter = 1:num_iters
     %       of the cost function (computeCostMulti) and gradient here.
     %
 
-
-
-
-
-
-
-
-
-
+    % using loop to get the result
+    theta_temp = theta
+    for i=1:size(X, 2) % get the num of features of X
+        theta(i) = theta(i) - alpha * sum(((X * theta_temp - y) .* X(:,i)))/m
+    end
 
     % ============================================================
 
