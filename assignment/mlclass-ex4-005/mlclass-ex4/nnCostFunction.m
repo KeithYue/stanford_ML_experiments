@@ -63,22 +63,42 @@ Theta2_grad = zeros(size(Theta2));
 %
 
 
+% compute the cost over all the samples
+for i=1:m
+    sample = X(i, :)
 
+    % label the truth vector
+    truth = zeros(1, num_labels)
+    truth(y(i)) = 1
+    % add bias to each sample
+    sample = [1, sample]
+    a1 = sample
+    z2 = a1 * Theta1'
+    a2 = [1, sigmoid(z2)]
+    z3 =  a2 * Theta2'
 
+    % compute the hyposis
+    a3 = sigmoid(z3)
+    h = a3
+    J = J + sum( -truth .* log(h) - (1 - truth) .* log(1 - h))
 
+    % perform the back propagation algorithm
+    delta3 = a3 - truth
+    delta2 = (delta3 * Theta2)(2:end) .* sigmoidGradient(z2)
+    Theta1_grad = Theta1_grad + delta2' * a1
+    Theta2_grad = Theta2_grad + delta3' * a2
 
+end
+J = J / m
 
+% add regularization
+J = J + (lambda / (2*m)) * (sum(sum( Theta1(:, 2:end) .^ 2)) + sum(sum( Theta2(:, 2:end) .^ 2)))
 
-
-
-
-
-
-
-
-
-
-
+Theta1_grad = Theta1_grad / m
+Theta2_grad = Theta2_grad / m
+% add regularization for gradient
+Theta1_grad(:, 2:end) += ((lambda / m) * Theta1(:, 2:end))
+Theta2_grad(:, 2:end) += (lambda / m) * Theta2(:, 2:end)
 
 % -------------------------------------------------------------
 
