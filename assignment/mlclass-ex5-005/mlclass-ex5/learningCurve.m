@@ -52,6 +52,14 @@ error_val   = zeros(m, 1);
 %
 
 % ---------------------- Sample Solution ----------------------
+for i=1:m
+    t = trainLinearReg(X(1:i, :), y(1:i), lambda)
+
+    [training_err, training_grad] = linearRegCostFunction(X(1:i, :), y(1:i), t, 0)
+    [cv_err, cv_grad] = linearRegCostFunction(Xval, yval, t, 0)
+    error_train(i) = training_err
+    error_val(i) = cv_err
+end
 
 
 
