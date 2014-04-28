@@ -22,12 +22,21 @@ sigma = 0.3;
 %  Note: You can compute the prediction error using 
 %        mean(double(predictions ~= yval))
 %
+C_candidate = [0.01, 0.03, 0.1, 0.3, 1, 3, 10, 30]
+sigma_candidate = [0.01, 0.03, 0.1, 0.3, 1, 3, 10, 30]
+min_error = 2 ^ 31
 
-
-
-
-
-
+for i=1:length(C_candidate):
+    for j=1:length(sigma_candidate):
+        c = C_candidate[i]
+        s = sigma_candidate[j]
+        model= svmTrain(X, y, c, @(x1, x2) gaussianKernel(x1, x2, s))
+        predictions = svmPredict(model, Xval)
+        current_error =  mean(double(predictions ~= yval))
+        if current_error < min_error:
+            min_error = current_error
+            C = c
+            sigma = s
 
 % =========================================================================
 
