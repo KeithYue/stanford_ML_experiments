@@ -25,16 +25,17 @@ centroids = zeros(K, n);
 %
 % Note: You can use a for-loop over the centroids to compute this.
 %
-
-
-
-
-
-
-
+for k=1:K
+    sub_X = []
+    for i=1:m
+        if idx(i) == k
+            sub_X = [sub_X; X(i,:)]
+        end
+    end
+    centroids(k,:) = mean(sub_X, 1)
+end
 
 % =============================================================
 
 
 end
-
